@@ -29,7 +29,7 @@
     async function cargarFact() {
       document.getElementById('fact').textContent = "Cargando...";
       try {
-        const res = await fetch('http://54.90.90.23:3000/catfact');
+        const res = await fetch('http://18.205.107.212:3000/catfact');
         const data = await res.json();
         const traducido = await traducir(data.fact);
         document.getElementById('fact').textContent = traducido;
