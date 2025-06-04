@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cat Fact del Día 🐱</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 100px; }
+    #fact { font-size: 1.5em; color: #333; margin: 20px; }
+    button { font-size: 1em; padding: 10px 20px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>🐾 Cat Fact del Día</h1>
+  <p id="fact">Cargando dato curioso...</p>
+  <button onclick="cargarFact()">🔁 Obtener otro dato</button>
+
+  <script>
+    async function traducir(texto) {
+      try {
+        const res = await fetch("https://api.mymemory.translated.net/get?q=" + encodeURIComponent(texto) + "&langpair=en|es");
+        const data = await res.json();
+        return data.responseData.translatedText;
+      } catch (e) {
+        console.error("Error al traducir:", e);
+        return texto;
+      }
+    }
+
+    async function cargarFact() {
+      document.getElementById('fact').textContent = "Cargando...";
+      try {
+        const res = await fetch('http://localhost:3000/catfact');
+        const data = await res.json();
+        const traducido = await traducir(data.fact);
+        document.getElementById('fact').textContent = traducido;
+      } catch (err) {
+        document.getElementById('fact').textContent = 'Error al obtener el dato 😿';
+        console.error(err);
+      }
+    }
+
+    // Cargar automáticamente al inicio
+    cargarFact();
+  </script>
+</body>
+</html>
